@@ -1894,8 +1894,8 @@
         // Update header statistics
         function renderScoreFormStudentOptions() {
             scoreStudentSelect.innerHTML = '';
-            const sortedStudents = [...allStudents].sort((a, b) => a.name.localeCompare(b.name));
-            sortedStudents.forEach(student => {
+            // Keep the original order of students (no sorting)
+            allStudents.forEach(student => {
                 const option = document.createElement('option');
                 option.value = student.id;
                 option.textContent = student.name;
