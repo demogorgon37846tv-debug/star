@@ -1092,8 +1092,8 @@
                         </select>
                     </div>
                     <div class="score-form-group">
-                        <label for="score-value-input">Score to Add</label>
-                        <input id="score-value-input" class="form-control" type="number" min="1" max="100" value="1" required>
+                        <label for="score-value-input">Score to Add (use negative to deduct)</label>
+                        <input id="score-value-input" class="form-control" type="number" min="-100" max="100" step="1" value="1" required>
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">Add Score</button>
@@ -1909,8 +1909,8 @@
             const subject = scoreSubjectSelect.value;
             const scoreToAdd = parseInt(scoreValueInput.value, 10);
 
-            if (!studentId || !subject || scoreToAdd <= 0) {
-                alert('Please select a student, a subject, and enter a valid score.');
+            if (!studentId || !subject || isNaN(scoreToAdd) || scoreToAdd === 0) {
+                alert('Please select a student, a subject, and enter a non-zero score. Use negative values to deduct.');
                 return;
             }
 
@@ -1923,10 +1923,10 @@
             if (!student) return;
 
             if (subject === 'overall') {
-                student.stars.overall += score;
+                student.stars.overall = Math.max(0, student.stars.overall + score);
             } else {
-                student.stars[subject] += score;
-                student.stars.overall += score;
+                student.stars[subject] = Math.max(0, student.stars[subject] + score);
+                student.stars.overall = Math.max(0, student.stars.overall + score);
             }
 
             const subjectNames = {
